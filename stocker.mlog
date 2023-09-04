@@ -1,0 +1,16 @@
+set item @silicon
+set to_stock dome1
+set stock 30
+sensor amount to_stock item
+jump 6 lessThan amount stock
+end
+ubind @mono
+ulocate building core false @copper out_x out_y found building
+ucontrol approach out_x out_y 4 0 0
+ucontrol itemTake building item stock 0 0
+sensor out_x to_stock @x
+sensor out_y to_stock @y
+ucontrol approach out_x out_y 4 0 0
+ucontrol itemDrop to_stock stock 4 0 0
+ucontrol unbind dome1 stock 4 0 0
+end
