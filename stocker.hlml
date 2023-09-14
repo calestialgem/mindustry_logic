@@ -2,6 +2,7 @@
 
 using mlog::itemCapacity;
 using mlog::range;
+using mlog::totalItems;
 using mlog::x;
 using mlog::y;
 
@@ -43,6 +44,10 @@ proc stock_item(inventory, carrier_type, item_type) {
 
   # Go to core and take the resources.
   approach_to(core_x, core_y);
+  if mlog::unit.totalItems != 0 {
+    mlog::ucontrol_itemDrop(core, carried_amount);
+    while mlog::unit.item_type != 0 { mlog::wait(0.1); }
+  }
   mlog::ucontrol_itemTake(core, item_type, carried_amount);
   while mlog::unit.item_type != carried_amount {
     mlog::wait(0.1);
