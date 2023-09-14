@@ -1,1 +1,108 @@
+set stocker$stock_item$return$location 5
+set stocker$stock_item$inventory dome1
+set stocker$stock_item$carrier_type @mono
+set stocker$stock_item$item_type @silicon
+jump 28 always
+set stocker$stock_item$return$location 10
+set stocker$stock_item$inventory dome1
+set stocker$stock_item$carrier_type @mono
+set stocker$stock_item$item_type @phase-fabric
+jump 28 always
 end
+ucontrol move stocker$approach_to$target_x stocker$approach_to$target_y
+jump 14 equal true true
+jump 26 always
+wait 0.1
+sensor _0 @unit @x
+op sub _0 stocker$approach_to$target_x _0
+sensor _0 @unit @y
+op sub _0 stocker$approach_to$target_y _0
+op len stocker$approach_to$distance _0 _0
+sensor _0 @unit @range
+op lessThan _0 stocker$approach_to$distance _0
+jump 25 equal false _0
+jump 26 always
+jump 25 always
+jump 14 equal true true
+set stocker$approach_to$return$value null
+set @counter stocker$approach_to$return$location
+sensor _0 stocker$stock_item$inventory stocker$stock_item$item_type
+set stocker$stock_item$inventory_amount _0
+op greaterThanEq _0 stocker$stock_item$inventory_amount 3
+jump 34 equal false _0
+set @counter stocker$stock_item$return$location
+jump 34 always
+ubind stocker$stock_item$carrier_type
+ulocate building core false 0 stocker$stock_item$core_x stocker$stock_item$core_y null stocker$stock_item$core
+sensor _0 stocker$stock_item$inventory @itemCapacity
+sensor _0 stocker$stock_item$carrier_type @itemCapacity
+op min stocker$stock_item$carried_amount _0 _0
+sensor _0 stocker$stock_item$core stocker$stock_item$item_type
+op min stocker$stock_item$carried_amount stocker$stock_item$carried_amount _0
+op equal _0 stocker$stock_item$carried_amount 0
+jump 46 equal false _0
+ucontrol unbind
+set @counter stocker$stock_item$return$location
+jump 46 always
+set stocker$approach_to$return$location 50
+set stocker$approach_to$target_x stocker$stock_item$core_x
+set stocker$approach_to$target_y stocker$stock_item$core_y
+jump 11 always
+ucontrol itemTake stocker$stock_item$core stocker$stock_item$item_type stocker$stock_item$carried_amount
+sensor _0 @unit stocker$stock_item$item_type
+op notEqual _0 _0 stocker$stock_item$carried_amount
+jump 55 equal true _0
+jump 59 always
+wait 0.1
+sensor _0 @unit stocker$stock_item$item_type
+op notEqual _0 _0 stocker$stock_item$carried_amount
+jump 55 equal true _0
+set stocker$approach_to$return$location 65
+sensor _0 stocker$stock_item$inventory @x
+set stocker$approach_to$target_x _0
+sensor _0 stocker$stock_item$inventory @y
+set stocker$approach_to$target_y _0
+jump 11 always
+ucontrol itemDrop stocker$stock_item$core stocker$stock_item$carried_amount
+sensor _0 @unit stocker$stock_item$item_type
+op notEqual _0 _0 0
+set _0 _0
+jump 74 equal false _0
+sensor _0 stocker$stock_item$inventory stocker$stock_item$item_type
+sensor _1 stocker$stock_item$inventory @itemCapacity
+op notEqual _0 _0 _1
+set _0 _0
+op notEqual _0 _0 0
+jump 77 equal true _0
+jump 88 always
+wait 0.1
+sensor _0 @unit stocker$stock_item$item_type
+op notEqual _0 _0 0
+set _0 _0
+jump 86 equal false _0
+sensor _0 stocker$stock_item$inventory stocker$stock_item$item_type
+sensor _1 stocker$stock_item$inventory @itemCapacity
+op notEqual _0 _0 _1
+set _0 _0
+op notEqual _0 _0 0
+jump 77 equal true _0
+sensor _0 @unit stocker$stock_item$item_type
+op notEqual _0 _0 0
+jump 105 equal false _0
+set stocker$approach_to$return$location 95
+set stocker$approach_to$target_x stocker$stock_item$core_x
+set stocker$approach_to$target_y stocker$stock_item$core_y
+jump 11 always
+ucontrol itemDrop stocker$stock_item$core stocker$stock_item$carried_amount
+sensor _0 @unit stocker$stock_item$item_type
+op notEqual _0 _0 0
+jump 100 equal true _0
+jump 104 always
+wait 0.1
+sensor _0 @unit stocker$stock_item$item_type
+op notEqual _0 _0 0
+jump 100 equal true _0
+jump 105 always
+ucontrol unbind
+set stocker$stock_item$return$value null
+set @counter stocker$stock_item$return$location

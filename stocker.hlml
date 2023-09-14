@@ -1,3 +1,82 @@
-# Stocks a Overdrive Dome with phase-fabric and silicon using a mono.
+# Stocks an Overdrive Dome with phase-fabric and silicon using a mono.
 
-entrypoint {}
+using mlog::itemCapacity;
+using mlog::range;
+using mlog::x;
+using mlog::y;
+
+## Overdrive Dome that is stocked.
+link dome1;
+
+## Number of items where below restocking will commence.
+const trigger_amount = 3;
+
+entrypoint {
+  stock_item(dome1, mlog::mono, mlog::silicon);
+  stock_item(dome1, mlog::mono, mlog::phase_fabric);
+}
+
+## Stocks the given inventory with a carrier of the given unit type with items
+## of the given item type.
+proc stock_item(inventory, carrier_type, item_type) {
+  # Check if there is a need to restock the inventory.
+  var inventory_amount = inventory.item_type;
+  if inventory_amount >= trigger_amount { return; }
+
+  # Bind the unit.
+  mlog::ubind(carrier_type);
+
+  # Locate the core.
+  var core_x;
+  var core_y;
+  var core;
+  mlog::ulocate_building_core(mlog::false, core_x, core_y, mlog::null, core);
+
+  # Find the amount to carry.
+  var carried_amount;
+  mlog::op_min(
+    carried_amount,
+    inventory.itemCapacity,
+    carrier_type.itemCapacity);
+  mlog::op_min(carried_amount, carried_amount, core.item_type);
+  if carried_amount == 0 { mlog::ucontrol_unbind(); return; }
+
+  # Go to core and take the resources.
+  approach_to(core_x, core_y);
+  mlog::ucontrol_itemTake(core, item_type, carried_amount);
+  while mlog::unit.item_type != carried_amount {
+    mlog::wait(0.1);
+  }
+
+  # Go to the inventory and leave the resources.
+  approach_to(inventory.x, inventory.y);
+  mlog::ucontrol_itemDrop(core, carried_amount);
+  while
+    mlog::unit.item_type != 0 &&
+    inventory.item_type != inventory.itemCapacity
+  {
+    mlog::wait(0.1);
+  }
+
+  # If there are any extra resources, go to the core and leave them.
+  if mlog::unit.item_type != 0 {
+    approach_to(core_x, core_y);
+    mlog::ucontrol_itemDrop(core, carried_amount);
+    while mlog::unit.item_type != 0 { mlog::wait(0.1); }
+  }
+
+  # Release the unit.
+  mlog::ucontrol_unbind();
+}
+
+## Makes to unit move towards the given coordinate until it is in its range.
+## Stalls the program until the unit reaches there.
+proc approach_to(target_x, target_y) {
+  mlog::ucontrol_move(target_x, target_y);
+  while mlog::true {
+    mlog::wait(0.1);
+    var distance;
+    mlog::op_len(distance, target_x - mlog::unit.x, target_y - mlog::unit.y);
+    if distance < mlog::unit.range { break; }
+  }
+}
