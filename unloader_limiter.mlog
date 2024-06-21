@@ -1,0 +1,54 @@
+set unloader_limiter$limit_output$return$location 6
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader1
+set unloader_limiter$limit_output$item @plastanium
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+set unloader_limiter$limit_output$return$location 12
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader2
+set unloader_limiter$limit_output$item @phase-fabric
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+set unloader_limiter$limit_output$return$location 18
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader3
+set unloader_limiter$limit_output$item @surge-alloy
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+set unloader_limiter$limit_output$return$location 24
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader4
+set unloader_limiter$limit_output$item @silicon
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+set unloader_limiter$limit_output$return$location 30
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader5
+set unloader_limiter$limit_output$item @graphite
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+set unloader_limiter$limit_output$return$location 36
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader6
+set unloader_limiter$limit_output$item @silicon
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+set unloader_limiter$limit_output$return$location 42
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader7
+set unloader_limiter$limit_output$item @lead
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+set unloader_limiter$limit_output$return$location 48
+set unloader_limiter$limit_output$inventory nucleus1
+set unloader_limiter$limit_output$unloader unloader8
+set unloader_limiter$limit_output$item @metaglass
+set unloader_limiter$limit_output$min_amount 3000
+jump 49 always
+end
+sensor _0 unloader_limiter$limit_output$inventory unloader_limiter$limit_output$item
+op greaterThanEq _0 _0 unloader_limiter$limit_output$min_amount
+control enabled unloader_limiter$limit_output$unloader _0
+set unloader_limiter$limit_output$return$value null
+set @counter unloader_limiter$limit_output$return$location
