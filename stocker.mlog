@@ -1,146 +1,99 @@
 set stocker$stock_item$return$location 5
-set stocker$stock_item$inventory dome1
+set stocker$stock_item$inventory container1
 set stocker$stock_item$carrier_type @mono
 set stocker$stock_item$item_type @silicon
-jump 30 always
+jump 53 always
 set stocker$stock_item$return$location 10
-set stocker$stock_item$inventory dome1
+set stocker$stock_item$inventory container1
 set stocker$stock_item$carrier_type @mono
 set stocker$stock_item$item_type @phase-fabric
-jump 30 always
+jump 53 always
 end
-print stocker$debug$message
-printflush message1
-set stocker$debug$return$value null
-set @counter stocker$debug$return$location
-jump 17 equal true true
-jump 28 always
-ucontrol move stocker$approach_to$target_x stocker$approach_to$target_y
-set stocker$debug$return$location 21
-set stocker$debug$message "Waiting to approach..."
-jump 11 always
-wait 0.1
-sensor _0 @unit @range
-ucontrol within stocker$approach_to$target_x stocker$approach_to$target_y _0 stocker$approach_to$within
-jump 27 equal false stocker$approach_to$within
-jump 28 always
-jump 27 always
-jump 17 equal true true
-set stocker$approach_to$return$value null
-set @counter stocker$approach_to$return$location
-sensor _0 stocker$stock_item$inventory stocker$stock_item$item_type
-set stocker$stock_item$inventory_amount _0
-op greaterThanEq _0 stocker$stock_item$inventory_amount 3
-jump 36 equal false _0
+jump 13 equal true true
+jump 21 always
+sensor _0 @unit @totalItems
+set lib$drop_all_to$items _0
+op equal _0 lib$drop_all_to$items 0
+jump 19 equal false _0
+jump 21 always
+jump 19 always
+ucontrol itemDrop lib$drop_all_to$inventory lib$drop_all_to$items
+jump 13 equal true true
+set lib$drop_all_to$return$value null
+set @counter lib$drop_all_to$return$location
+jump 25 equal true true
+jump 40 always
+sensor _0 @unit @totalItems
+set lib$take_from$items _0
+op sub _1 lib$take_from$amount lib$take_from$items
+set lib$take_from$difference _1
+op equal _2 lib$take_from$difference 0
+jump 33 equal false _2
+jump 40 always
+jump 33 always
+op greaterThan _2 lib$take_from$difference 0
+jump 37 equal false _2
+ucontrol itemTake lib$take_from$inventory lib$take_from$item_type lib$take_from$difference
+jump 39 always
+op sub _2 0 lib$take_from$difference
+ucontrol itemDrop lib$take_from$inventory _2
+jump 25 equal true true
+set lib$take_from$return$value null
+set @counter lib$take_from$return$location
+jump 44 equal true true
+jump 51 always
+ucontrol move lib$approach_to$target_x lib$approach_to$target_y
+sensor _2 @unit @range
+ucontrol within lib$approach_to$target_x lib$approach_to$target_y _2 lib$approach_to$within
+jump 50 equal false lib$approach_to$within
+jump 51 always
+jump 50 always
+jump 44 equal true true
+set lib$approach_to$return$value null
+set @counter lib$approach_to$return$location
+sensor _2 stocker$stock_item$inventory stocker$stock_item$item_type
+set stocker$stock_item$inventory_amount _2
+op greaterThanEq _2 stocker$stock_item$inventory_amount 3
+jump 59 equal false _2
 set @counter stocker$stock_item$return$location
-jump 36 always
+jump 59 always
 ubind stocker$stock_item$carrier_type
 ulocate building core false 0 stocker$stock_item$core_x stocker$stock_item$core_y null stocker$stock_item$core
-sensor _0 stocker$stock_item$inventory @itemCapacity
-sensor _0 stocker$stock_item$carrier_type @itemCapacity
-op min stocker$stock_item$carried_amount _0 _0
-sensor _0 stocker$stock_item$core stocker$stock_item$item_type
-op min stocker$stock_item$carried_amount stocker$stock_item$carried_amount _0
-op equal _0 stocker$stock_item$carried_amount 0
-jump 48 equal false _0
-ucontrol unbind
-set @counter stocker$stock_item$return$location
-jump 48 always
-set stocker$approach_to$return$location 52
-set stocker$approach_to$target_x stocker$stock_item$core_x
-set stocker$approach_to$target_y stocker$stock_item$core_y
-jump 15 always
-sensor _0 @unit @totalItems
-op notEqual _0 _0 0
-jump 56 equal true _0
-jump 65 always
-sensor _0 @unit @totalItems
-ucontrol itemDrop stocker$stock_item$core _0
-set stocker$debug$return$location 61
-set stocker$debug$message "Waiting to drop to the core..."
+sensor _2 stocker$stock_item$inventory @itemCapacity
+sensor _2 stocker$stock_item$carrier_type @itemCapacity
+op min stocker$stock_item$carried_amount _2 _2
+set lib$approach_to$return$location 68
+set lib$approach_to$target_x stocker$stock_item$core_x
+set lib$approach_to$target_y stocker$stock_item$core_y
+jump 42 always
+set lib$drop_all_to$return$location 71
+set lib$drop_all_to$inventory stocker$stock_item$core
 jump 11 always
-wait 0.1
-sensor _0 @unit @totalItems
-op notEqual _0 _0 0
-jump 56 equal true _0
-sensor _0 @unit stocker$stock_item$item_type
-op notEqual _0 _0 stocker$stock_item$carried_amount
-set _0 _0
-jump 72 equal false _0
-sensor _0 stocker$stock_item$core stocker$stock_item$item_type
-op notEqual _0 _0 0
-set _0 _0
-op notEqual _0 _0 0
-jump 75 equal true _0
-jump 89 always
-ucontrol itemTake stocker$stock_item$core stocker$stock_item$item_type stocker$stock_item$carried_amount
-set stocker$debug$return$location 79
-set stocker$debug$message "Waiting to take from the core..."
+set lib$take_from$return$location 76
+set lib$take_from$inventory stocker$stock_item$core
+set lib$take_from$item_type stocker$stock_item$item_type
+set lib$take_from$amount stocker$stock_item$carried_amount
+jump 23 always
+set lib$approach_to$return$location 82
+sensor _2 stocker$stock_item$inventory @x
+set lib$approach_to$target_x _2
+sensor _2 stocker$stock_item$inventory @y
+set lib$approach_to$target_y _2
+jump 42 always
+set lib$drop_all_to$return$location 85
+set lib$drop_all_to$inventory stocker$stock_item$inventory
 jump 11 always
-wait 0.1
-sensor _0 @unit stocker$stock_item$item_type
-op notEqual _0 _0 stocker$stock_item$carried_amount
-set _0 _0
-jump 87 equal false _0
-sensor _0 stocker$stock_item$core stocker$stock_item$item_type
-op notEqual _0 _0 0
-set _0 _0
-op notEqual _0 _0 0
-jump 75 equal true _0
-set stocker$approach_to$return$location 95
-sensor _0 stocker$stock_item$inventory @x
-set stocker$approach_to$target_x _0
-sensor _0 stocker$stock_item$inventory @y
-set stocker$approach_to$target_y _0
-jump 15 always
-sensor _0 @unit @totalItems
-op notEqual _0 _0 0
-set _0 _0
-jump 103 equal false _0
-sensor _0 stocker$stock_item$inventory stocker$stock_item$item_type
-sensor _1 stocker$stock_item$inventory @itemCapacity
-op notEqual _0 _0 _1
-set _0 _0
-op notEqual _0 _0 0
-jump 106 equal true _0
-jump 122 always
-sensor _0 @unit @totalItems
-ucontrol itemDrop stocker$stock_item$inventory _0
-set stocker$debug$return$location 111
-set stocker$debug$message "Waiting to drop to the inventory..."
+sensor _2 @unit @totalItems
+op notEqual _2 _2 0
+jump 96 equal false _2
+set lib$approach_to$return$location 92
+set lib$approach_to$target_x stocker$stock_item$core_x
+set lib$approach_to$target_y stocker$stock_item$core_y
+jump 42 always
+set lib$drop_all_to$return$location 95
+set lib$drop_all_to$inventory stocker$stock_item$core
 jump 11 always
-wait 0.1
-sensor _0 @unit @totalItems
-op notEqual _0 _0 0
-set _0 _0
-jump 120 equal false _0
-sensor _0 stocker$stock_item$inventory stocker$stock_item$item_type
-sensor _1 stocker$stock_item$inventory @itemCapacity
-op notEqual _0 _0 _1
-set _0 _0
-op notEqual _0 _0 0
-jump 106 equal true _0
-sensor _0 @unit @totalItems
-op notEqual _0 _0 0
-jump 143 equal false _0
-set stocker$approach_to$return$location 129
-set stocker$approach_to$target_x stocker$stock_item$core_x
-set stocker$approach_to$target_y stocker$stock_item$core_y
-jump 15 always
-sensor _0 @unit @totalItems
-op notEqual _0 _0 0
-jump 133 equal true _0
-jump 142 always
-sensor _0 @unit @totalItems
-ucontrol itemDrop stocker$stock_item$core _0
-set stocker$debug$return$location 138
-set stocker$debug$message "Waiting to drop to the core..."
-jump 11 always
-wait 0.1
-sensor _0 @unit @totalItems
-op notEqual _0 _0 0
-jump 133 equal true _0
-jump 143 always
+jump 96 always
 ucontrol unbind
 set stocker$stock_item$return$value null
 set @counter stocker$stock_item$return$location

@@ -1,4 +1,4 @@
-# Stocks an Overdrive Dome with phase-fabric and silicon using a mono.
+# Stocks an inventory with phase-fabric and silicon using a mono.
 
 using mlog::itemCapacity;
 using mlog::range;
@@ -6,18 +6,15 @@ using mlog::totalItems;
 using mlog::x;
 using mlog::y;
 
-## Overdrive Dome that is stocked.
-link dome1;
-
-## Message to log debug messages to.
-link message1 as debugger;
+## Inventory that is stocked.
+link container1 as stocked;
 
 ## Number of items where below restocking will commence.
 const trigger_amount = 3;
 
 entrypoint {
-  stock_item(dome1, mlog::mono, mlog::silicon);
-  stock_item(dome1, mlog::mono, mlog::phase_fabric);
+  stock_item(stocked, mlog::mono, mlog::silicon);
+  stock_item(stocked, mlog::mono, mlog::phase_fabric);
 }
 
 ## Stocks the given inventory with a carrier of the given unit type with items
@@ -42,62 +39,22 @@ proc stock_item(inventory, carrier_type, item_type) {
     carried_amount,
     inventory.itemCapacity,
     carrier_type.itemCapacity);
-  mlog::op_min(carried_amount, carried_amount, core.item_type);
-  if carried_amount == 0 { mlog::ucontrol_unbind(); return; }
 
-  # Go to core and take the resources.
-  approach_to(core_x, core_y);
-  while mlog::unit.totalItems != 0 {
-    mlog::ucontrol_itemDrop(core, mlog::unit.totalItems);
-    debug("Waiting to drop to the core...");
-    mlog::wait(0.1);
-  }
-  while mlog::unit.item_type != carried_amount && core.item_type != 0 {
-    mlog::ucontrol_itemTake(core, item_type, carried_amount);
-    debug("Waiting to take from the core...");
-    mlog::wait(0.1);
-  }
+  # Pick up the items from the core.
+  lib::approach_to(core_x, core_y);
+  lib::drop_all_to(core);
+  lib::take_from(core, item_type, carried_amount);
 
-  # Go to the inventory and leave the resources.
-  approach_to(inventory.x, inventory.y);
-  while
-    mlog::unit.totalItems != 0 &&
-    inventory.item_type != inventory.itemCapacity
-  {
-    mlog::ucontrol_itemDrop(inventory, mlog::unit.totalItems);
-    debug("Waiting to drop to the inventory...");
-    mlog::wait(0.1);
-  }
+  # Drop the items to the inventory.
+  lib::approach_to(inventory.x, inventory.y);
+  lib::drop_all_to(inventory);
 
-  # If there are any extra resources, go to the core and leave them.
+  # Drop the leftovers to the core.
   if mlog::unit.totalItems != 0 {
-    approach_to(core_x, core_y);
-    while mlog::unit.totalItems != 0 {
-      mlog::ucontrol_itemDrop(core, mlog::unit.totalItems);
-      debug("Waiting to drop to the core...");
-      mlog::wait(0.1);
-    }
+    lib::approach_to(core_x, core_y);
+    lib::drop_all_to(core);
   }
 
   # Release the unit.
   mlog::ucontrol_unbind();
-}
-
-## Makes to unit move towards the given coordinate until it is in its range.
-## Stalls the program until the unit reaches there.
-proc approach_to(target_x, target_y) {
-  while mlog::true {
-    mlog::ucontrol_move(target_x, target_y);
-    debug("Waiting to approach...");
-    mlog::wait(0.1);
-    var within;
-    mlog::ucontrol_within(target_x, target_y, mlog::unit.range, within);
-    if within { break; }
-  }
-}
-
-## Prints the given debug message.
-proc debug(message) {
-  mlog::print(message);
-  mlog::printflush(debugger);
 }
