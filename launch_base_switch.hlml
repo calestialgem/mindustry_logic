@@ -1,0 +1,57 @@
+# Switches the launch base unloaders.
+
+using mlog::enabled;
+
+link unloader1 as unloader_01;
+link unloader2 as unloader_02;
+link unloader3 as unloader_03;
+link unloader4 as unloader_04;
+link unloader5 as unloader_05;
+link unloader6 as unloader_06;
+link unloader7 as unloader_07;
+link unloader8 as unloader_08;
+link unloader9 as unloader_09;
+link unloader10 as unloader_10;
+link unloader11 as unloader_11;
+link unloader12 as unloader_12;
+link unloader13 as unloader_13;
+link unloader14 as unloader_14;
+link unloader15 as unloader_15;
+link unloader16 as unloader_16;
+link unloader17 as unloader_17;
+link unloader18 as unloader_18;
+link unloader19 as unloader_19;
+link unloader20 as unloader_20;
+link unloader21 as unloader_21;
+link unloader22 as unloader_22;
+link unloader23 as unloader_23;
+link unloader24 as unloader_24;
+link switch1 as switch;
+
+entrypoint {
+  var on = switch.enabled;
+  mlog::control_enabled(unloader_01, on);
+  mlog::control_enabled(unloader_02, on);
+  mlog::control_enabled(unloader_03, on);
+  mlog::control_enabled(unloader_04, on);
+  mlog::control_enabled(unloader_05, on);
+  mlog::control_enabled(unloader_06, on);
+  mlog::control_enabled(unloader_07, on);
+  mlog::control_enabled(unloader_08, on);
+  mlog::control_enabled(unloader_09, on);
+  mlog::control_enabled(unloader_10, on);
+  mlog::control_enabled(unloader_11, on);
+  mlog::control_enabled(unloader_12, on);
+  mlog::control_enabled(unloader_13, on);
+  mlog::control_enabled(unloader_14, on);
+  mlog::control_enabled(unloader_15, on);
+  mlog::control_enabled(unloader_16, on);
+  mlog::control_enabled(unloader_17, on);
+  mlog::control_enabled(unloader_18, on);
+  mlog::control_enabled(unloader_19, on);
+  mlog::control_enabled(unloader_20, on);
+  mlog::control_enabled(unloader_21, on);
+  mlog::control_enabled(unloader_22, on);
+  mlog::control_enabled(unloader_23, on);
+  mlog::control_enabled(unloader_24, on);
+}

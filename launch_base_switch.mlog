@@ -1,0 +1,27 @@
+sensor _0 switch1 @enabled
+set launch_base_switch$entrypoint$on _0
+control enabled unloader1 launch_base_switch$entrypoint$on
+control enabled unloader2 launch_base_switch$entrypoint$on
+control enabled unloader3 launch_base_switch$entrypoint$on
+control enabled unloader4 launch_base_switch$entrypoint$on
+control enabled unloader5 launch_base_switch$entrypoint$on
+control enabled unloader6 launch_base_switch$entrypoint$on
+control enabled unloader7 launch_base_switch$entrypoint$on
+control enabled unloader8 launch_base_switch$entrypoint$on
+control enabled unloader9 launch_base_switch$entrypoint$on
+control enabled unloader10 launch_base_switch$entrypoint$on
+control enabled unloader11 launch_base_switch$entrypoint$on
+control enabled unloader12 launch_base_switch$entrypoint$on
+control enabled unloader13 launch_base_switch$entrypoint$on
+control enabled unloader14 launch_base_switch$entrypoint$on
+control enabled unloader15 launch_base_switch$entrypoint$on
+control enabled unloader16 launch_base_switch$entrypoint$on
+control enabled unloader17 launch_base_switch$entrypoint$on
+control enabled unloader18 launch_base_switch$entrypoint$on
+control enabled unloader19 launch_base_switch$entrypoint$on
+control enabled unloader20 launch_base_switch$entrypoint$on
+control enabled unloader21 launch_base_switch$entrypoint$on
+control enabled unloader22 launch_base_switch$entrypoint$on
+control enabled unloader23 launch_base_switch$entrypoint$on
+control enabled unloader24 launch_base_switch$entrypoint$on
+end
