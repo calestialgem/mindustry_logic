@@ -7,8 +7,8 @@ I am writing them in [hlml](https://github.com/calestialgem/hlml) and using
 [hlml.java](https://github.com/calestialgem/hlml.java) for compiling them.
 
 Also I have set the VS Code default build task to generate an `mlog` file for
-the currently active editor. These settings should work as long as a JVM above
-Java 22 is available on the path.
+the currently active editor. These settings should work as long as a JVM for
+Java 21 or higher is available on the path.
 
 ## License
 
