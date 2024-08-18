@@ -1,5 +1,7 @@
 # Makes sure outputs from an inventory do not empty it completely.
 
+using mlog::config;
+
 link nucleus1 as inventory;
 link unloader1;
 link unloader2;
@@ -9,29 +11,22 @@ link unloader5;
 link unloader6;
 link unloader7;
 link unloader8;
-const item1 = mlog::plastanium;
-const item2 = mlog::phase_fabric;
-const item3 = mlog::surge_alloy;
-const item4 = mlog::silicon;
-const item5 = mlog::graphite;
-const item6 = mlog::silicon;
-const item7 = mlog::lead;
-const item8 = mlog::metaglass;
 const min_amount = 3e3;
 
 entrypoint {
-  limit_output(inventory, unloader1, item1, min_amount);
-  limit_output(inventory, unloader2, item2, min_amount);
-  limit_output(inventory, unloader3, item3, min_amount);
-  limit_output(inventory, unloader4, item4, min_amount);
-  limit_output(inventory, unloader5, item5, min_amount);
-  limit_output(inventory, unloader6, item6, min_amount);
-  limit_output(inventory, unloader7, item7, min_amount);
-  limit_output(inventory, unloader8, item8, min_amount);
+  limit_output(inventory, unloader1, min_amount);
+  limit_output(inventory, unloader2, min_amount);
+  limit_output(inventory, unloader3, min_amount);
+  limit_output(inventory, unloader4, min_amount);
+  limit_output(inventory, unloader5, min_amount);
+  limit_output(inventory, unloader6, min_amount);
+  limit_output(inventory, unloader7, min_amount);
+  limit_output(inventory, unloader8, min_amount);
 }
 
 # Enables an unloader if amount of an item in an inventory is greater than or
 # equal to a lower limit. Otherwise, disables the unloader.
-proc limit_output(inventory, unloader, item, min_amount) {
+proc limit_output(inventory, unloader, min_amount) {
+  var item = unloader.config;
   mlog::control_enabled(unloader, inventory.item >= min_amount);
 }
