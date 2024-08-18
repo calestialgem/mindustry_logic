@@ -11,6 +11,14 @@ link unloader5;
 link unloader6;
 link unloader7;
 link unloader8;
+link unloader9;
+link unloader10;
+link unloader11;
+link unloader12;
+link unloader13;
+link unloader14;
+link unloader15;
+link unloader16;
 const min_amount = 3e3;
 
 entrypoint {
@@ -22,6 +30,14 @@ entrypoint {
   limit_output(inventory, unloader6, min_amount);
   limit_output(inventory, unloader7, min_amount);
   limit_output(inventory, unloader8, min_amount);
+  limit_output(inventory, unloader9, min_amount);
+  limit_output(inventory, unloader10, min_amount);
+  limit_output(inventory, unloader11, min_amount);
+  limit_output(inventory, unloader12, min_amount);
+  limit_output(inventory, unloader13, min_amount);
+  limit_output(inventory, unloader14, min_amount);
+  limit_output(inventory, unloader15, min_amount);
+  limit_output(inventory, unloader16, min_amount);
 }
 
 # Enables an unloader if amount of an item in an inventory is greater than or
