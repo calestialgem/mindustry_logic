@@ -1,11 +1,12 @@
 # Intermittent library for code that will be separated but its grouping and the
 # final destination is not decided yet.
 
+using mlog::itemCapacity;
 using mlog::range;
 using mlog::totalItems;
 
 ## Time to wait after giving the unit a command.
-const waiting_duration = 0.1;
+const waiting_duration = 1;
 
 ## Makes the bound unit move such that the given coordinate is in its range.
 public proc approach_to(target_x, target_y) {
@@ -33,18 +34,11 @@ public proc drop_all_to(inventory) {
 ## Makes the bound unit take items from the given inventory.
 ##
 ## Assumes the inventory is within the unit's range.
-public proc take_from(inventory, item_type, amount) {
-  var difference;
+public proc take_from(inventory, item_type) {
   while mlog::true {
-    difference = amount - mlog::unit.totalItems;
-    if difference == 0 { break; }
-    if difference > 0 {
-      mlog::ucontrol_itemTake(inventory, item_type, difference);
-      mlog::wait(waiting_duration);
-    }
-    else {
-      mlog::ucontrol_itemDrop(inventory, -difference);
-      mlog::wait(waiting_duration);
-    }
+    var difference = mlog::unit.itemCapacity - mlog::unit.totalItems;
+    if difference <= 0 { break; }
+    mlog::ucontrol_itemTake(inventory, item_type, difference);
+    mlog::wait(waiting_duration);
   }
 }

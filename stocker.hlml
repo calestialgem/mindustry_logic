@@ -10,11 +10,11 @@ using mlog::y;
 link container1 as stocked;
 
 ## Number of items where below restocking will commence.
-const trigger_amount = 3;
+const trigger_amount = 20;
 
 entrypoint {
-  stock_item(stocked, mlog::mono, mlog::silicon);
-  stock_item(stocked, mlog::mono, mlog::phase_fabric);
+  stock_item(stocked, mlog::mega, mlog::silicon);
+  stock_item(stocked, mlog::mega, mlog::phase_fabric);
 }
 
 ## Stocks the given inventory with a carrier of the given unit type with items
@@ -33,27 +33,14 @@ proc stock_item(inventory, carrier_type, item_type) {
   var core;
   mlog::ulocate_building_core(mlog::false, core_x, core_y, mlog::null, core);
 
-  # Find the amount to carry.
-  var carried_amount;
-  mlog::op_min(
-    carried_amount,
-    inventory.itemCapacity,
-    carrier_type.itemCapacity);
-
   # Pick up the items from the core.
   lib::approach_to(core_x, core_y);
   lib::drop_all_to(core);
-  lib::take_from(core, item_type, carried_amount);
+  lib::take_from(core, item_type);
 
   # Drop the items to the inventory.
   lib::approach_to(inventory.x, inventory.y);
   lib::drop_all_to(inventory);
-
-  # Drop the leftovers to the core.
-  if mlog::unit.totalItems != 0 {
-    lib::approach_to(core_x, core_y);
-    lib::drop_all_to(core);
-  }
 
   # Release the unit.
   mlog::ucontrol_unbind();
