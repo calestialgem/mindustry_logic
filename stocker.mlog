@@ -9,8 +9,8 @@ set stocker$stock_item$carrier_type @mega
 set stocker$stock_item$item_type @phase-fabric
 jump 51 always
 end
-jump 13 equal true true
-jump 22 always
+jump 12 always
+jump 22 equal false true
 sensor _0 @unit @totalItems
 set lib$drop_all_to$items _0
 op equal _0 lib$drop_all_to$items 0
@@ -19,11 +19,11 @@ jump 22 always
 jump 19 always
 ucontrol itemDrop lib$drop_all_to$inventory lib$drop_all_to$items
 wait 1
-jump 13 equal true true
+jump 12 always
 set lib$drop_all_to$return$value null
 set @counter lib$drop_all_to$return$location
-jump 26 equal true true
-jump 37 always
+jump 25 always
+jump 37 equal false true
 sensor _0 @unit @itemCapacity
 sensor _1 @unit @totalItems
 op sub _0 _0 _1
@@ -34,11 +34,11 @@ jump 37 always
 jump 34 always
 ucontrol itemTake lib$take_from$inventory lib$take_from$item_type lib$take_from$difference
 wait 1
-jump 26 equal true true
+jump 25 always
 set lib$take_from$return$value null
 set @counter lib$take_from$return$location
-jump 41 equal true true
-jump 49 always
+jump 40 always
+jump 49 equal false true
 ucontrol move lib$approach_to$target_x lib$approach_to$target_y
 wait 1
 sensor _0 @unit @range
@@ -46,7 +46,7 @@ ucontrol within lib$approach_to$target_x lib$approach_to$target_y _0 lib$approac
 jump 48 equal false lib$approach_to$within
 jump 49 always
 jump 48 always
-jump 41 equal true true
+jump 40 always
 set lib$approach_to$return$value null
 set @counter lib$approach_to$return$location
 sensor _0 stocker$stock_item$inventory stocker$stock_item$item_type
