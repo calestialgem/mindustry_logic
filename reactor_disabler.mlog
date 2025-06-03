@@ -1,0 +1,12 @@
+set reactor_disabler$entrypoint$i 0
+op notEqual _0 reactor_disabler$entrypoint$i @links
+jump 4 equal true _0
+jump 11 always
+getlink reactor_disabler$entrypoint$reactor reactor_disabler$entrypoint$i
+sensor _0 reactor_disabler$entrypoint$reactor @heat
+op lessThanEq _0 _0 0
+control enabled reactor_disabler$entrypoint$reactor _0
+op add reactor_disabler$entrypoint$i reactor_disabler$entrypoint$i 1
+op notEqual _0 reactor_disabler$entrypoint$i @links
+jump 4 equal true _0
+end

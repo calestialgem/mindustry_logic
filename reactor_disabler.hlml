@@ -1,0 +1,11 @@
+# Checks a Thorium Reactor's heat and disables it to prevent it from exploding.
+
+using mlog::heat as heat;
+
+entrypoint {
+  while var i = 0; i != mlog::links; i++ {
+    var reactor;
+    mlog::getlink(reactor, i);
+    mlog::control_enabled(reactor, reactor.heat <= 0);
+  }
+}
